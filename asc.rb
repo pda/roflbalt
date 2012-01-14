@@ -208,14 +208,34 @@ class Player
   end
   def x; 0; end
   def width; 3 end
-  def height; 4 end
+  def height; 3 end
   def char rx, ry, ticks
-    [
-      ' @ ',
-      '---',
-      ' | ',
-      '/ \\',
-    ][ry][rx]
+    if dead?
+      [
+        ' @ ',
+        '\-/',
+        '// ',
+      ][ry][rx]
+    elsif !@walking
+      [
+        ' O/',
+        '/| ',
+        '/ >',
+      ][ry][rx]
+    else
+      [
+        [
+          ' O ',
+          '/|v',
+          '/ >',
+        ],
+        [
+          ' 0 ',
+          '-|\\',
+          ' >\\',
+        ],
+      ][ticks / 4 % 2][ry][rx]
+    end
   end
   def acceleration
     if @dead
