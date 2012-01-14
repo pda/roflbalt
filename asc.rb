@@ -5,11 +5,18 @@ class Game
     @world = World.new
     @screen = Screen.new(100, 40, @world)
   end
+  def run
+    loop do
+      render
+      @world.tick
+      sleep 0.1
+    end
+  end
   def render
     @world.buildings.each do |building|
       @screen.draw(building)
     end
-    #@screen.draw(@world.player)
+    @screen.draw(@world.player)
     @screen.render
   end
 end
@@ -18,25 +25,27 @@ class Screen < Struct.new(:width, :height, :world)
   OFFSET = -20
   def initialize width, height, world
     super
+    create_frame_buffer
+  end
+  def create_frame_buffer
     @fb = Framebuffer.new
   end
   def draw renderable
     p "DRAWING"
-    (0..renderable.y).each do |i|
-      y = renderable.y - i
+    (renderable.y..(renderable.y + renderable.height)).each do |y|
       (renderable.x..(renderable.x + renderable.width)).each do |x|
         @fb.set x, y, renderable.char
       end
     end
   end
   def render
-    (0..height).each do |i|
-      y = height - i
+    (0..height).each do |y|
       (OFFSET..(width - OFFSET)).each do |x|
         print @fb.get(x, y)
       end
       print "\n"
     end
+    create_frame_buffer
   end
 end
 
@@ -54,16 +63,26 @@ end
 
 class World
   def initialize
-    @player = Player.new(12)
+    @player = Player.new(25)
     @buildings = []
-    @buildings << Building.new(20, 10, -10)
-    @buildings << Building.new(12, 13, 20)
+    [
+      [-10, 30, 20],
+      [20, 35, 20],
+      [50, 20, 20],
+    ].each do |params|
+      @buildings << Building.new(*params)
+    end
   end
   attr_reader :buildings, :player
+  def tick
+    buildings.each do |b|
+      b.x -= 1
+    end
+  end
 end
 
-class Building < Struct.new(:width, :height, :x)
-  alias_method :y, :height
+class Building < Struct.new(:x, :y, :width)
+  def height; 30 end
   def char; "#" end
 end
 
@@ -74,4 +93,4 @@ class Player < Struct.new(:y)
   def char; "@" end
 end
 
-Game.new.render
+Game.new.run
