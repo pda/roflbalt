@@ -30,10 +30,8 @@ class Screen < Struct.new(:width, :height, :world)
     @fb = Framebuffer.new
   end
   def draw renderable
-    (renderable.y...(renderable.y + renderable.height)).each do |y|
-      (renderable.x...(renderable.x + renderable.width)).each do |x|
-        @fb.set x, y, renderable.char
-      end
+    renderable.each_pixel do |x, y, char|
+      @fb.set x, y, char
     end
   end
   def render
@@ -96,13 +94,31 @@ class BuildingGenerator < Struct.new(:world)
   end
 end
 
+module Renderable
+  def each_pixel
+    (y...(y + height)).each do |y|
+      (x...(x + width)).each do |x|
+        yield x, y, char
+      end
+    end
+  end
+end
+
 class Building < Struct.new(:x, :y, :width)
+  include Renderable
+  def initialize x, y, width
+    super
+    @seed = rand(1000)
+  end
   def height; 50 end
-  def char; "#" end
+  def char
+    "#"
+  end
   def right_x; x + width end
 end
 
 class Player < Struct.new(:y)
+  include Renderable
   def x; 0; end
   def width; 1 end
   def height; 2 end
