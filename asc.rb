@@ -93,6 +93,7 @@ class World
         b.x += speed
         @speed = 0
         @misc << Blood.new(player.x, player.y)
+        @misc << GameOverBanner.new
         player.die!
       end
     end
@@ -243,6 +244,24 @@ class Scoreboard
       '+------------------+',
       '| Score: %9s |' % [ @world.distance],
       '+------------------+'
+    ]
+  end
+  def char rx, ry, ticks
+    template[ry][rx]
+  end
+end
+
+class GameOverBanner
+  include Renderable
+  def x; 40 end
+  def y; 20 end
+  def width; 30 end
+  def height; 3 end
+  def template
+    [
+      '-----------------------------',
+      '--        Game Over        --',
+      '-----------------------------',
     ]
   end
   def char rx, ry, ticks
