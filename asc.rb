@@ -72,6 +72,7 @@ class World
     buildings.each do |b|
       b.x -= 2
     end
+    player.tick
   end
 end
 
@@ -127,14 +128,24 @@ class Building < Struct.new(:x, :y, :width)
   def right_x; x + width end
 end
 
-class Player < Struct.new(:y)
+class Player
   include Renderable
+  def initialize y
+    @y = y
+    @velocity = 1
+  end
   def x; 0; end
   def width; 1 end
   def height; 3 end
   def char rx, ry
     %w{ @ | L }[ry]
   end
+  def acceleration; 9.8 end
+  def tick
+    @y += @velocity
+    @velocity += acceleration * 0.01
+  end
+  def y; @y.to_i end
 end
 
 Game.new.run
