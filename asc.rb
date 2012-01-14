@@ -187,11 +187,13 @@ class Building < Struct.new(:x, :y, :width)
   def height; 50 end
   def char rx, ry, ticks
     if ry == 0
-      "="
-    elsif [ 0, width - 1 ].include? rx
-      "|"
+      "\033[48;5;238m\033[38;5;234m=\033[0m"
+    elsif rx == 0
+      "\033[48;5;238m\033[38;5;234m|\033[0m"
+    elsif rx == width - 1
+      "\033[48;5;235m\033[38;5;234m|\033[0m"
     else
-      rx % @period >= @period - @window_width && ry % 5 >= 2 ? " " : "#"
+      rx % @period >= @period - @window_width && ry % 5 >= 2 ? " " : "\033[48;5;236m\033[38;5;235m:\033[0m"
     end
   end
 end
@@ -204,14 +206,15 @@ class Player
     @walking = false
   end
   def x; 0; end
-  def width; 1 end
-  def height; 3 end
+  def width; 3 end
+  def height; 4 end
   def char rx, ry, ticks
-    if @dead
-      %w{ O | \\ }[ry]
-    else
-      %w{ O | L }[ry]
-    end
+    [
+      ' @ ',
+      '---',
+      ' | ',
+      '/ \\',
+    ][ry][rx]
   end
   def acceleration
     if @dead
@@ -250,7 +253,7 @@ class Blood < Struct.new(:x, :y)
   def width; 2 end
   def x; super + 2 end
   def char rx, ry, ticks
-    "\033[31m$\033[0m"
+    "\033[48;5;52m\033[38;5;124m:\033[0m"
   end
 end
 
