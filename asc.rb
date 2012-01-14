@@ -16,6 +16,9 @@ class Game
       @screen.draw(building)
     end
     @screen.draw(@world.player)
+    @world.misc.each do |object|
+      @screen.draw(object)
+    end
     @screen.render
   end
 end
@@ -68,9 +71,10 @@ class World
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 40, 100) ]
+    @misc = []
     @speed = 4
   end
-  attr_reader :buildings, :player, :horizon, :speed
+  attr_reader :buildings, :player, :horizon, :speed, :misc
   def tick
     # TODO: this, but less often.
     @building_generator.generate_if_necessary
@@ -84,6 +88,7 @@ class World
       if player.bottom_y > b.y
         b.x += speed
         @speed = 0
+        @misc << Blood.new(player.x, player.y)
       end
     end
 
@@ -188,6 +193,16 @@ class Player
   end
   def jump
     @velocity = -2
+  end
+end
+
+class Blood < Struct.new(:x, :y)
+  include Renderable
+  def height; 4 end
+  def width; 2 end
+  def x; super + 2 end
+  def char rx, ry
+    "\033[31m$\033[0m"
   end
 end
 
