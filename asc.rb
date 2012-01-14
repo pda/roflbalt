@@ -86,7 +86,7 @@ class World
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 30, 160) ]
     @misc = [ Scoreboard.new(self) ]
-    @speed = 3
+    @speed = 4
     @distance = 0
   end
   attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance
@@ -150,17 +150,17 @@ class BuildingGenerator < Struct.new(:world)
       world.buildings << Building.new(
         b.right_x + minimium_gap + rand(24),
         next_y(b),
-        rand(30) + 30
+        rand(40) + 40
       )
     end
   end
-  def minimium_gap; 8 end
+  def minimium_gap; 16 end
   def maximum_height_delta; 10 end
   def minimum_height_clearance; 20; end
   def next_y previous_building
     p = previous_building
     delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
-    [35, [previous_building.y - delta, minimum_height_clearance].max].min
+    [30, [previous_building.y - delta, minimum_height_clearance].max].min
   end
 end
 
@@ -246,7 +246,7 @@ end
 
 class Blood < Struct.new(:x, :y)
   include Renderable
-  def height; 6 end
+  def height; 4 end
   def width; 2 end
   def x; super + 2 end
   def char rx, ry, ticks
