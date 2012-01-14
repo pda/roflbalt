@@ -240,7 +240,7 @@ end
 
 class Blood < Struct.new(:x, :y)
   include Renderable
-  def height; 4 end
+  def height; 6 end
   def width; 2 end
   def x; super + 2 end
   def char rx, ry, ticks
