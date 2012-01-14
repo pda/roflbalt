@@ -42,7 +42,8 @@ class Screen < Struct.new(:width, :height, :world)
       end
       print "\n"
     end
-    print "b:#{world.buildings.size}"
+    print " b:#{world.buildings.size}"
+    print " ob?:#{world.building_under_player ? "yes" : "no"}"
     puts " |" * (width / 2)
     create_frame_buffer
   end
@@ -76,7 +77,17 @@ class World
     buildings.each do |b|
       b.x -= 2
     end
+
+    if b = building_under_player
+      player.walk_on_building b if player.bottom_y >= b.y
+    end
+
     player.tick
+  end
+  def building_under_player
+    buildings.detect do |b|
+      b.x <= player.x && b.right_x >= player.right_x
+    end
   end
 end
 
@@ -115,6 +126,7 @@ module Renderable
       end
     end
   end
+  def right_x; x + width end
 end
 
 class Building < Struct.new(:x, :y, :width)
@@ -134,7 +146,6 @@ class Building < Struct.new(:x, :y, :width)
       rx % @period >= @period - @window_width && ry % 5 >= 2 ? " " : "#"
     end
   end
-  def right_x; x + width end
 end
 
 class Player
@@ -153,8 +164,14 @@ class Player
   def tick
     @y += @velocity
     @velocity += acceleration * 0.01
+    if @y > 40 then @velocity *= -0.7 end
   end
   def y; @y.round end
+  def bottom_y; y + height end
+  def walk_on_building b
+    @y = b.y - height
+    @velocity = 0
+  end
 end
 
 Game.new.run
