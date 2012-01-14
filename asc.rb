@@ -36,7 +36,7 @@ class Screen < Struct.new(:width, :height, :world)
     @fb = Framebuffer.new
   end
   def draw renderable
-    renderable.each_pixel do |x, y, char|
+    renderable.each_pixel(world.ticks) do |x, y, char|
       @fb.set x, y, char
     end
   end
@@ -67,6 +67,7 @@ end
 
 class World
   def initialize horizon
+    @ticks = 0
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
@@ -75,7 +76,7 @@ class World
     @speed = 4
     @distance = 0
   end
-  attr_reader :buildings, :player, :horizon, :speed, :misc, :distance
+  attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance
   def tick
     # TODO: this, but less often.
     @building_generator.generate_if_necessary
@@ -107,6 +108,7 @@ class World
       player.walk_on_building b if player.bottom_y >= b.y
     end
 
+    @ticks += 1
   end
   def building_under_player
     buildings.detect do |b|
@@ -141,12 +143,12 @@ class BuildingGenerator < Struct.new(:world)
 end
 
 module Renderable
-  def each_pixel
+  def each_pixel ticks
     (y...(y + height)).each do |y|
       (x...(x + width)).each do |x|
         rx = x - self.x
         ry = y - self.y
-        yield x, y, char(rx, ry)
+        yield x, y, char(rx, ry, ticks)
       end
     end
   end
@@ -161,7 +163,7 @@ class Building < Struct.new(:x, :y, :width)
     @window_width = @period - rand(2) - 1
   end
   def height; 50 end
-  def char rx, ry
+  def char rx, ry, ticks
     if ry == 0
       "="
     elsif [ 0, width - 1 ].include? rx
@@ -182,7 +184,7 @@ class Player
   def x; 0; end
   def width; 1 end
   def height; 3 end
-  def char rx, ry
+  def char rx, ry, ticks
     if @dead
       %w{ O | \\ }[ry]
     else
@@ -222,7 +224,7 @@ class Blood < Struct.new(:x, :y)
   def height; 4 end
   def width; 2 end
   def x; super + 2 end
-  def char rx, ry
+  def char rx, ry, ticks
     "\033[31m$\033[0m"
   end
 end
@@ -243,7 +245,7 @@ class Scoreboard
       '+------------------+'
     ]
   end
-  def char rx, ry
+  def char rx, ry, ticks
     template[ry][rx]
   end
 end
