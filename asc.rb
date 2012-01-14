@@ -74,7 +74,8 @@ class Framebuffer
     @pixels[x][y] = char
   end
   def get x, y
-    @pixels[x][y] || " "
+    n = (233.1 - 1.1 * Math.sin((x + Time.new.to_f * 10) / 5 + y / 5)).to_i
+    @pixels[x][y] || "\033[48;5;#{n}m \033[0m"
   end
 end
 
