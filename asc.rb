@@ -71,14 +71,17 @@ class World
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 40, 100) ]
-    @misc = []
+    @misc = [ Scoreboard.new(self) ]
     @speed = 4
+    @distance = 0
   end
-  attr_reader :buildings, :player, :horizon, :speed, :misc
+  attr_reader :buildings, :player, :horizon, :speed, :misc, :distance
   def tick
     # TODO: this, but less often.
     @building_generator.generate_if_necessary
     @building_generator.destroy_if_necessary
+
+    @distance += speed
 
     buildings.each do |b|
       b.x -= speed
@@ -221,6 +224,27 @@ class Blood < Struct.new(:x, :y)
   def x; super + 2 end
   def char rx, ry
     "\033[31m$\033[0m"
+  end
+end
+
+class Scoreboard
+  include Renderable
+  def initialize world
+    @world = world
+  end
+  def height; 3 end
+  def width; 20 end
+  def x; -20 end
+  def y; 0 end
+  def template
+    [
+      '+------------------+',
+      '| Score: %9s |' % [ @world.distance],
+      '+------------------+'
+    ]
+  end
+  def char rx, ry
+    template[ry][rx]
   end
 end
 
