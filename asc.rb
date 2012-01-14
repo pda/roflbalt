@@ -2,12 +2,17 @@
 
 class Game
   def initialize
+    reset
+  end
+  def reset
     @world = World.new(180)
     @screen = Screen.new(160, 50, @world)
   end
   def run
     loop do
-      @world.tick
+      unless @world.tick
+        reset
+      end
       render
     end
   end
@@ -99,7 +104,13 @@ class World
     end
 
     begin
-      player.jump if STDIN.read_nonblock(1)
+      if STDIN.read_nonblock(1)
+        if player.dead?
+          return false
+        else
+          player.jump
+        end
+      end
     rescue Errno::EAGAIN
     end
 
@@ -217,6 +228,9 @@ class Player
   def die!
     @dead = true
     @velocity = 0.5
+  end
+  def dead?
+    @dead
   end
 end
 
