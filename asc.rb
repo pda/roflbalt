@@ -84,7 +84,7 @@ class World
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
-    @buildings = [ Building.new(-10, 30, 100) ]
+    @buildings = [ Building.new(-10, 30, 160) ]
     @misc = [ Scoreboard.new(self) ]
     @speed = 3
     @distance = 0
