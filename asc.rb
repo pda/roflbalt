@@ -213,8 +213,8 @@ class Player
     if dead?
       [
         ' @ ',
-        '\-/',
-        '// ',
+        '\+/',
+        ' \\\\',
       ][ry][rx]
     elsif !@walking
       [
