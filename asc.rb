@@ -80,7 +80,7 @@ class World
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 40, 100) ]
     @misc = [ Scoreboard.new(self) ]
-    @speed = 4
+    @speed = 3
     @distance = 0
   end
   attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance
