@@ -10,13 +10,14 @@ class Game
   end
   def run
     loop do
+      start_time = Time.new.to_f
       unless @world.tick
         reset
       end
-      render
+      render start_time
     end
   end
-  def render
+  def render start_time
     @world.buildings.each do |building|
       @screen.draw(building)
     end
@@ -24,7 +25,7 @@ class Game
     @world.misc.each do |object|
       @screen.draw(object)
     end
-    @screen.render
+    @screen.render start_time
   end
 end
 
@@ -45,7 +46,7 @@ class Screen < Struct.new(:width, :height, :world)
       @fb.set x, y, char
     end
   end
-  def render
+  def render start_time
     print "\e[H"
     buffer = ''
     (0...height).each do |y|
@@ -55,6 +56,11 @@ class Screen < Struct.new(:width, :height, :world)
       buffer << "\n"
     end
     buffer << " ." * (width / 2)
+
+    dt = Time.new.to_f - start_time;
+    target_time = 0.04
+    sleep target_time - dt if dt < target_time
+
     print buffer
     create_frame_buffer
   end
