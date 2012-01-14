@@ -26,7 +26,8 @@ class Screen < Struct.new(:width, :height, :world)
     super
     create_frame_buffer
     %x{stty -icanon -echo}
-    print "\x1B[?25l"
+    print "\033[2J" # clear screen
+    print "\x1B[?25l" # disable cursor
   end
   def create_frame_buffer
     @fb = Framebuffer.new
