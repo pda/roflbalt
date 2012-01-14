@@ -26,6 +26,7 @@ class Screen < Struct.new(:width, :height, :world)
     super
     create_frame_buffer
     %x{stty -icanon -echo}
+    print "\x1B[?25l"
   end
   def create_frame_buffer
     @fb = Framebuffer.new
