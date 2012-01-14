@@ -154,7 +154,7 @@ class Player
     @y += @velocity
     @velocity += acceleration * 0.01
   end
-  def y; @y.to_i end
+  def y; @y.round end
 end
 
 Game.new.run
