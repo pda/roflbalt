@@ -3,7 +3,7 @@
 class Game
   def initialize
     @world = World.new(120)
-    @screen = Screen.new(100, 40, @world)
+    @screen = Screen.new(120, 50, @world)
   end
   def run
     loop do
@@ -65,19 +65,13 @@ class World
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
-    @buildings = []
-    [
-      [-10, 30, 20],
-      [20, 35, 20],
-    ].each do |params|
-      @buildings << Building.new(*params)
-    end
+    @buildings = [ Building.new(-10, 40, 20) ]
   end
   attr_reader :buildings, :player, :horizon
   def tick
     @building_generator.generate_if_necessary
     buildings.each do |b|
-      b.x -= 1
+      b.x -= 2
     end
   end
 end
@@ -88,7 +82,7 @@ class BuildingGenerator < Struct.new(:world)
       world.buildings << Building.new(
         b.right_x + minimium_gap + rand(8),
         next_y(b),
-        rand(8) + 8
+        rand(16) + 16
       )
     end
   end
