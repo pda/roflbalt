@@ -6,7 +6,7 @@ class Game
   end
   def reset
     @world = World.new(180)
-    @screen = Screen.new(160, 50, @world)
+    @screen = Screen.new(160, 40, @world)
   end
   def run
     loop do
@@ -78,7 +78,7 @@ class World
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
-    @buildings = [ Building.new(-10, 40, 100) ]
+    @buildings = [ Building.new(-10, 30, 100) ]
     @misc = [ Scoreboard.new(self) ]
     @speed = 3
     @distance = 0
@@ -154,7 +154,7 @@ class BuildingGenerator < Struct.new(:world)
   def next_y previous_building
     p = previous_building
     delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
-    [40, [previous_building.y - delta, minimum_height_clearance].max].min
+    [35, [previous_building.y - delta, minimum_height_clearance].max].min
   end
 end
 
