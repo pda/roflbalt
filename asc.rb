@@ -69,7 +69,10 @@ class World
   end
   attr_reader :buildings, :player, :horizon
   def tick
+    # TODO: this, but less often.
     @building_generator.generate_if_necessary
+    @building_generator.destroy_if_necessary
+
     buildings.each do |b|
       b.x -= 2
     end
@@ -78,6 +81,11 @@ class World
 end
 
 class BuildingGenerator < Struct.new(:world)
+  def destroy_if_necessary
+    while world.buildings.any? && world.buildings.first.x < -200
+      world.buildings.shift
+    end
+  end
   def generate_if_necessary
     while (b = world.buildings.last).x < world.horizon
       world.buildings << Building.new(
