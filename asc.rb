@@ -180,7 +180,11 @@ class Player
   def width; 1 end
   def height; 3 end
   def char rx, ry
-    %w{ @ | L }[ry]
+    if @dead
+      %w{ O | \\ }[ry]
+    else
+      %w{ O | L }[ry]
+    end
   end
   def acceleration
     if @dead
