@@ -98,7 +98,9 @@ module Renderable
   def each_pixel
     (y...(y + height)).each do |y|
       (x...(x + width)).each do |x|
-        yield x, y, char
+        rx = x - self.x
+        ry = y - self.y
+        yield x, y, char(rx, ry)
       end
     end
   end
@@ -111,7 +113,7 @@ class Building < Struct.new(:x, :y, :width)
     @seed = rand(1000)
   end
   def height; 50 end
-  def char
+  def char rx, ry
     "#"
   end
   def right_x; x + width end
@@ -121,8 +123,10 @@ class Player < Struct.new(:y)
   include Renderable
   def x; 0; end
   def width; 1 end
-  def height; 2 end
-  def char; "@" end
+  def height; 3 end
+  def char rx, ry
+    %w{ @ | L }[ry]
+  end
 end
 
 Game.new.run
