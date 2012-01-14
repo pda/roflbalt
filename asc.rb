@@ -86,8 +86,10 @@ class World
   attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance
   def tick
     # TODO: this, but less often.
-    @building_generator.generate_if_necessary
-    @building_generator.destroy_if_necessary
+    if @ticks % 20 == 0
+      @building_generator.generate_if_necessary
+      @building_generator.destroy_if_necessary
+    end
 
     @distance += speed
 
