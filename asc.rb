@@ -47,13 +47,15 @@ class Screen < Struct.new(:width, :height, :world)
   end
   def render
     print "\e[H"
+    buffer = ''
     (0...height).each do |y|
       (OFFSET...(width + OFFSET)).each do |x|
-        print @fb.get(x, y)
+        buffer << @fb.get(x, y)
       end
-      print "\n"
+      buffer << "\n"
     end
-    puts " ." * (width / 2)
+    buffer << " ." * (width / 2)
+    print buffer
     create_frame_buffer
   end
 end
