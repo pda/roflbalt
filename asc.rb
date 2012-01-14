@@ -42,7 +42,8 @@ class Screen < Struct.new(:width, :height, :world)
       end
       print "\n"
     end
-    puts "| " * (width / 2)
+    print "b:#{world.buildings.size}"
+    puts " |" * (width / 2)
     create_frame_buffer
   end
 end
