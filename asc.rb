@@ -173,6 +173,7 @@ class Player
   def initialize y
     @y = y
     @velocity = 1
+    @walking = false
   end
   def x; 0; end
   def width; 1 end
@@ -184,15 +185,17 @@ class Player
   def tick
     @y += @velocity
     @velocity += acceleration * 0.01
+    @walking = false
   end
   def y; @y.round end
   def bottom_y; y + height end
   def walk_on_building b
     @y = b.y - height
     @velocity = 0
+    @walking = true
   end
   def jump
-    @velocity = -2
+    @velocity = -2 if @walking
   end
 end
 
