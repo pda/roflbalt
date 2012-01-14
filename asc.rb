@@ -9,7 +9,6 @@ class Game
     loop do
       render
       @world.tick
-      sleep 0.1
     end
   end
   def render
@@ -31,7 +30,6 @@ class Screen < Struct.new(:width, :height, :world)
     @fb = Framebuffer.new
   end
   def draw renderable
-    p "DRAWING"
     (renderable.y..(renderable.y + renderable.height)).each do |y|
       (renderable.x..(renderable.x + renderable.width)).each do |x|
         @fb.set x, y, renderable.char
@@ -39,6 +37,7 @@ class Screen < Struct.new(:width, :height, :world)
     end
   end
   def render
+    print "\e[H"
     (0..height).each do |y|
       (OFFSET..(width - OFFSET)).each do |x|
         print @fb.get(x, y)
