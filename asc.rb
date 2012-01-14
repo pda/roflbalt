@@ -25,6 +25,7 @@ class Screen < Struct.new(:width, :height, :world)
   def initialize width, height, world
     super
     create_frame_buffer
+    %x{stty -icanon -echo}
   end
   def create_frame_buffer
     @fb = Framebuffer.new
@@ -67,22 +68,36 @@ class World
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 40, 100) ]
+    @speed = 4
   end
-  attr_reader :buildings, :player, :horizon
+  attr_reader :buildings, :player, :horizon, :speed
   def tick
     # TODO: this, but less often.
     @building_generator.generate_if_necessary
     @building_generator.destroy_if_necessary
 
     buildings.each do |b|
-      b.x -= 2
+      b.x -= speed
     end
+
+    if b = building_under_player
+      if player.bottom_y > b.y
+        b.x += speed
+        @speed = 0
+      end
+    end
+
+    begin
+      player.jump if STDIN.read_nonblock(1)
+    rescue Errno::EAGAIN
+    end
+
+    player.tick
 
     if b = building_under_player
       player.walk_on_building b if player.bottom_y >= b.y
     end
 
-    player.tick
   end
   def building_under_player
     buildings.detect do |b|
@@ -160,17 +175,19 @@ class Player
   def char rx, ry
     %w{ @ | L }[ry]
   end
-  def acceleration; 9.8 end
+  def acceleration; 16.0 end
   def tick
     @y += @velocity
     @velocity += acceleration * 0.01
-    if @y > 40 then @velocity *= -0.7 end
   end
   def y; @y.round end
   def bottom_y; y + height end
   def walk_on_building b
     @y = b.y - height
     @velocity = 0
+  end
+  def jump
+    @velocity = -2
   end
 end
 
