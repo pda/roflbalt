@@ -186,12 +186,12 @@ class Player
     if @dead
       0
     else
-      16.0
+      0.35
     end
   end
   def tick
     @y += @velocity
-    @velocity += acceleration * 0.01
+    @velocity += acceleration
     @walking = false
   end
   def y; @y.round end
@@ -202,7 +202,7 @@ class Player
     @walking = true
   end
   def jump
-    @velocity = -2 if @walking
+    @velocity = -2.5 if @walking
   end
   def die!
     @dead = true
