@@ -283,9 +283,9 @@ class GameOverBanner
   def height; 3 end
   def template
     [
-      '-----------------------------',
-      '--        Game Over        --',
-      '-----------------------------',
+      ' --------------------------- ',
+      ' --       Game Over       -- ',
+      ' --------------------------- ',
     ]
   end
   def char rx, ry, ticks
