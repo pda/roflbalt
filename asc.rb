@@ -89,6 +89,7 @@ class World
         b.x += speed
         @speed = 0
         @misc << Blood.new(player.x, player.y)
+        player.die!
       end
     end
 
@@ -181,7 +182,13 @@ class Player
   def char rx, ry
     %w{ @ | L }[ry]
   end
-  def acceleration; 16.0 end
+  def acceleration
+    if @dead
+      0
+    else
+      16.0
+    end
+  end
   def tick
     @y += @velocity
     @velocity += acceleration * 0.01
@@ -196,6 +203,10 @@ class Player
   end
   def jump
     @velocity = -2 if @walking
+  end
+  def die!
+    @dead = true
+    @velocity = 0.5
   end
 end
 
