@@ -231,7 +231,7 @@ class BuildingGenerator
   end
   def minimium_gap; 16 end
   def maximum_height_delta; 10 end
-  def minimum_height_clearance; 20; end
+  def minimum_height_clearance; 12; end
   def next_y previous_building
     p = previous_building
     delta = 0
@@ -274,7 +274,7 @@ class Building
   def move_left distance
     @x -= distance
   end
-  def height; 20 end
+  def height; 35 end
   def pixel x, y, rx, ry, ticks
     if ry == 0
       if rx == width - 1
