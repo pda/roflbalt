@@ -444,7 +444,7 @@ class RoflCopter
     @x + (range * Math.sin(Time.new.to_f * 0.7)).round
   end
   def pixel x, y, rx, ry, ticks
-    Pixel.new char(rx, ry, ticks), 240, @background.color(x, y)
+    Pixel.new char(rx, ry, ticks), 246, @background.color(x, y)
   end
   def char rx, ry, ticks
     @frames[ticks % 2][ry][rx]
