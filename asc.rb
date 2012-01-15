@@ -90,7 +90,7 @@ class World
     @building_generator = BuildingGenerator.new(self)
     @player = Player.new(25)
     @buildings = [ Building.new(-10, 30, 120) ]
-    @misc = [ Scoreboard.new(self) ]
+    @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4) ]
     @speed = 4
     @distance = 0
   end
@@ -330,5 +330,44 @@ class GameOverBanner
     template[ry][rx]
   end
 end
+
+class RoflCopter < Struct.new(:x, :y)
+  include Renderable
+  def initialize x, y
+    super
+    @frames = [
+      [
+        '         :LOL:ROFL:ROFL',
+        '           ^           ',
+        '  L   /--------        ',
+        '  O ===       []\      ',
+        '  L    \         \     ',
+        '        \__________]   ',
+        '          I      I     ',
+        '       --------------/ ',
+      ],
+      [
+        'ROFL:ROFL:LOL:         ',
+        '           ^           ',
+        '      /--------        ',
+        ' LOL===       []\      ',
+        '       \         \     ',
+        '        \__________]   ',
+        '          I      I     ',
+        '       --------------/ ',
+      ],
+    ]
+  end
+
+  def width; 23 end
+  def height; 8 end
+  def y; super + (5 * Math.sin(Time.new.to_f)).to_i end
+  def char rx, ry, ticks
+    @frames[ticks % 2][ry][rx]
+  rescue
+    " " # Roflcopter crashes from time to time..
+  end
+end
+
 
 Game.new.run
