@@ -350,13 +350,13 @@ class Scoreboard
   def y; 1 end
   def template
     [
-      '+------------------+',
-      '| Score: %9s |' % [ @world.distance],
-      '+------------------+'
+      '                    ',
+      '  Score: %9s  ' % [ @world.distance],
+      '                    '
     ]
   end
   def pixel x, y, rx, ry, ticks
-    template[ry][rx]
+    Pixel.new template[ry][rx], 244, 234
   end
 end
 
