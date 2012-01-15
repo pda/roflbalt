@@ -352,30 +352,24 @@ class RoflCopter < Struct.new(:x, :y)
     super
     @frames = [
       [
-        '         :LOL:ROFL:ROFL',
-        '           ^           ',
-        '  L   /--------        ',
-        '  O ===       []\      ',
-        '  L    \         \     ',
-        '        \__________]   ',
-        '          I      I     ',
-        '       --------------/ ',
+        '         :LoL:ROFL:ROFL',
+        '  L    ____|__         ',
+        '  O ==`       []\      ',
+        '  L   \__________]     ',
+        '     .__|______|__/    ',
       ],
       [
-        'ROFL:ROFL:LOL:         ',
-        '           ^           ',
-        '      /--------        ',
-        ' LOL===       []\      ',
-        '       \         \     ',
-        '        \__________]   ',
-        '          I      I     ',
-        '       --------------/ ',
+        'ROFL:ROFL:LoL:         ',
+        '       ____|__         ',
+        ' LOL==`       []\      ',
+        '      \__________]     ',
+        '     .__|______|__/    ',
       ],
     ]
   end
 
   def width; 23 end
-  def height; 8 end
+  def height; 5 end
   def y; super + (5 * Math.sin(Time.new.to_f)).to_i end
   def char rx, ry, ticks
     @frames[ticks % 2][ry][rx]
