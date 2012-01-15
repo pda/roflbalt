@@ -80,6 +80,7 @@ class Screen
   def on_exit
     print "\033[0m" # reset colours
     print "\x1B[?25h" # re-enable cursor
+    print "\n"
   end
 end
 
