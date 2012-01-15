@@ -68,7 +68,6 @@ class Screen
       end
       buffer << "\n"
     end
-    buffer << "chars: #{@fb.size} "
     buffer << " ." * (width / 2)
 
     dt = Time.new.to_f - start_time;
