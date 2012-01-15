@@ -69,7 +69,6 @@ class Screen
       end
       buffer << "\n"
     end
-    buffer << " ." * (width / 2)
 
     dt = Time.new.to_f - start_time;
     target_time = 0.04
