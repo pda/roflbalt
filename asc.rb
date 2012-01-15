@@ -283,7 +283,10 @@ class Player
     @walking = true
   end
   def jump
-    @velocity = -2.5 if @walking
+    jump! if @walking
+  end
+  def jump!
+    @velocity = -2.5
   end
   def die!
     @dead = true
