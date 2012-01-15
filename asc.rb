@@ -384,7 +384,7 @@ class Blood < Struct.new(:x, :y)
   def width; 2 end
   def x; super + 2 end
   def pixel x, y, rx, ry, ticks
-    "\033[48;5;52m\033[38;5;124m:\033[0m"
+    Pixel.new ":", 124, 52
   end
 end
 
