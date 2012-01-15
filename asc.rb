@@ -358,7 +358,7 @@ end
 
 class GameOverBanner
   include Renderable
-  def x; 40 end
+  def x; 28 end
   def y; 20 end
   def width; 30 end
   def height; 3 end
