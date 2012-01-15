@@ -55,6 +55,7 @@ class Screen < Struct.new(:width, :height, :world)
       end
       buffer << "\n"
     end
+    buffer << "chars: #{@fb.size} "
     buffer << " ." * (width / 2)
 
     dt = Time.new.to_f - start_time;
@@ -76,6 +77,9 @@ class Framebuffer
   def get x, y
     n = (233.1 - 1.1 * Math.sin((x + Time.new.to_f * 10) / 5 + y / 5)).to_i
     @pixels[x][y] || "\033[48;5;#{n}m \033[0m"
+  end
+  def size
+    @pixels.values.reduce(0) { |a, v| a + v.size }
   end
 end
 
