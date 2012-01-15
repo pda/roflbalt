@@ -93,7 +93,7 @@ class Pixel
   def fg; @fg || 255 end
   def bg; @bg || 0 end
   def to_s
-    "\033[48;5;%dm\033[38;5;%dm%s\033[0m" % [ bg, fg, @char ]
+    "\033[48;5;%dm\033[38;5;%dm%s" % [ bg, fg, @char ]
   end
 end
 
