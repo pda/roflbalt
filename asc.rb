@@ -299,8 +299,8 @@ class Scoreboard
   end
   def height; 3 end
   def width; 20 end
-  def x; -20 end
-  def y; 0 end
+  def x; -18 end
+  def y; 1 end
   def template
     [
       '+------------------+',
