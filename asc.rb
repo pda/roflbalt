@@ -47,6 +47,7 @@ class Screen
     @background = background
     create_frame_buffer
     %x{stty -icanon -echo}
+    print "\033[0m" # reset
     print "\033[2J" # clear screen
     print "\x1B[?25l" # disable cursor
   end
