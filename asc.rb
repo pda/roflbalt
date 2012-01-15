@@ -97,15 +97,27 @@ class Pixel
 end
 
 class Background
-  MEDIAN = 233.1
-  RANGE = 1.1
-  PERIOD = 5
-  SPEED = 10
+  PALETTE = [ 16, 232 ]
+  PERIOD = 5.0
+  SPEED = 10.0
+  def pixel x, y, char = ":"
+    Pixel.new char, 0, color(x, y)
+  end
+  def color x, y
+    sin = Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)
+    PALETTE[(0.5 * sin + 0.5).round]
+  end
+end
+
+class WindowColor
+  PALETTE = [ 16, 60 ]
+  PERIOD = 6.0
   def pixel x, y, char = " "
     Pixel.new char, 0, color(x, y)
   end
   def color x, y
-    (MEDIAN - RANGE * Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)).round
+    sin = Math.sin(x / PERIOD + y / (PERIOD * 0.5))
+    PALETTE[(0.256 * sin + 0.256).round]
   end
 end
 
