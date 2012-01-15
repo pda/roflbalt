@@ -6,8 +6,9 @@ class Game
   end
   def reset
     @run = true
-    @world = World.new(120)
-    @screen = Screen.new(120, 40, @world)
+    background = Background.new
+    @world = World.new(120, background)
+    @screen = Screen.new(120, 40, @world, background)
   end
   def run
     Signal.trap(:INT) do
@@ -37,21 +38,25 @@ class Game
   end
 end
 
-class Screen < Struct.new(:width, :height, :world)
+class Screen
   OFFSET = -20
-  def initialize width, height, world
-    super
+  def initialize width, height, world, background
+    @width = width
+    @height = height
+    @world = world
+    @background = background
     create_frame_buffer
     %x{stty -icanon -echo}
     print "\033[2J" # clear screen
     print "\x1B[?25l" # disable cursor
   end
+  attr_reader :width, :height, :world
   def create_frame_buffer
-    @fb = Framebuffer.new
+    @fb = Framebuffer.new @background
   end
   def draw renderable
-    renderable.each_pixel(world.ticks) do |x, y, char|
-      @fb.set x, y, char
+    renderable.each_pixel(world.ticks) do |x, y, pixel|
+      @fb.set x, y, pixel
     end
   end
   def render start_time
@@ -59,7 +64,7 @@ class Screen < Struct.new(:width, :height, :world)
     buffer = ''
     (0...height).each do |y|
       (OFFSET...(width + OFFSET)).each do |x|
-        buffer << @fb.get(x, y)
+        buffer << @fb.get(x, y).to_s
       end
       buffer << "\n"
     end
@@ -79,16 +84,35 @@ class Screen < Struct.new(:width, :height, :world)
   end
 end
 
-class Framebuffer
-  def initialize
-    @pixels = Hash.new { |h, k| h[k] = {} }
+class Pixel < Struct.new(:char, :fg, :bg)
+  def to_s
+    "\033[48;5;#{bg}m\033[38;5;#{fg}m#{char}\033[0m"
   end
-  def set x, y, char
-    @pixels[x][y] = char
+end
+
+class Background
+  MEDIAN = 233.1
+  RANGE = 1.1
+  PERIOD = 5
+  SPEED = 10
+  def pixel x, y, char = " "
+    Pixel.new char, 0, color(x, y)
+  end
+  def color x, y
+    (MEDIAN - RANGE * Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)).round
+  end
+end
+
+class Framebuffer
+  def initialize background
+    @pixels = Hash.new { |h, k| h[k] = {} }
+    @background = background
+  end
+  def set x, y, pixel
+    @pixels[x][y] = pixel
   end
   def get x, y
-    n = (233.1 - 1.1 * Math.sin((x + Time.new.to_f * 10) / 5 + y / 5)).to_i
-    @pixels[x][y] || "\033[48;5;#{n}m \033[0m"
+    @pixels[x][y] || @background.pixel(x, y)
   end
   def size
     @pixels.values.reduce(0) { |a, v| a + v.size }
@@ -96,7 +120,7 @@ class Framebuffer
 end
 
 class World
-  def initialize horizon
+  def initialize horizon, background
     @ticks = 0
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
@@ -187,7 +211,7 @@ module Renderable
       (x...(x + width)).each do |x|
         rx = x - self.x
         ry = y - self.y
-        yield x, y, char(rx, ry, ticks)
+        yield x, y, pixel(x, y, rx, ry, ticks)
       end
     end
   end
@@ -205,22 +229,22 @@ class Building < Struct.new(:x, :y, :width)
     @left_color = @color + 2
   end
   def height; 20 end
-  def char rx, ry, ticks
+  def pixel x, y, rx, ry, ticks
     if ry == 0
       if rx == width - 1
-        " "
+        Pixel.new " "
       else
-        "\033[48;5;#{@top_color}m\033[38;5;234m=\033[0m"
+        Pixel.new "=", 234, @top_color
       end
     elsif rx == 0 || rx == 1
-      "\033[48;5;#{@left_color}m\033[38;5;234m|\033[0m"
+      Pixel.new "|", 0, @left_color
     elsif rx == 2
-      "\033[48;5;236m\033[38;5;234m:\033[0m"
+      Pixel.new ":", 234, 236
     elsif rx == width - 1
-      "\033[48;5;236m\033[38;5;234m|\033[0m"
+      Pixel.new "|", 234, 236
     else
       rx % @period >= @period - @window_width && ry % 5 >= 2 ?
-        "\033[48;5;232m \033[0m" : "\033[48;5;#{@color}m\033[38;5;235m:\033[0m"
+        Pixel.new(" ", 255, 232) : Pixel.new(":", 235, @color)
     end
   end
 end
@@ -235,6 +259,10 @@ class Player
   def x; 0; end
   def width; 3 end
   def height; 3 end
+  def pixel x, y, rx, ry, ticks
+    Pixel.new char(rx, ry, ticks), 255, 16
+  end
+
   def char rx, ry, ticks
     if dead?
       [
@@ -302,7 +330,7 @@ class Blood < Struct.new(:x, :y)
   def height; 4 end
   def width; 2 end
   def x; super + 2 end
-  def char rx, ry, ticks
+  def pixel x, y, rx, ry, ticks
     "\033[48;5;52m\033[38;5;124m:\033[0m"
   end
 end
@@ -323,7 +351,7 @@ class Scoreboard
       '+------------------+'
     ]
   end
-  def char rx, ry, ticks
+  def pixel x, y, rx, ry, ticks
     template[ry][rx]
   end
 end
@@ -341,7 +369,7 @@ class GameOverBanner
       ' --------------------------- ',
     ]
   end
-  def char rx, ry, ticks
+  def pixel x, y, rx, ry, ticks
     template[ry][rx]
   end
 end
@@ -371,7 +399,7 @@ class RoflCopter < Struct.new(:x, :y)
   def width; 23 end
   def height; 5 end
   def y; super + (5 * Math.sin(Time.new.to_f)).to_i end
-  def char rx, ry, ticks
+  def pixel x, y, rx, ry, ticks
     @frames[ticks % 2][ry][rx]
   rescue
     " " # Roflcopter crashes from time to time..
