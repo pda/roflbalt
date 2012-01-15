@@ -277,7 +277,7 @@ class Building
   def move_left distance
     @x -= distance
   end
-  def height; 35 end
+  def height; SCREEN_HEIGHT - @y end
   def pixel x, y, rx, ry, ticks
     if ry == 0
       if rx == width - 1
