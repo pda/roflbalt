@@ -448,7 +448,7 @@ class RoflCopter
     Pixel.new char(rx, ry, ticks), 246, @background.color(x, y)
   end
   def char rx, ry, ticks
-    @frames[ticks % 2][ry][rx]
+    @frames[ticks % 2][ry][rx] || " "
   rescue
     " " # Roflcopter crashes from time to time..
   end
