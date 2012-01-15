@@ -100,7 +100,7 @@ class Background
   PALETTE = [ 16, 232, 233 ]
   PERIOD = 5.0
   SPEED = 10.0
-  def pixel x, y, char = ":"
+  def pixel x, y, char = " "
     Pixel.new char, 0, color(x, y)
   end
   def color x, y
