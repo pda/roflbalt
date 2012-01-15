@@ -129,9 +129,9 @@ class World
   def initialize horizon, background
     @ticks = 0
     @horizon = horizon
-    @building_generator = BuildingGenerator.new(self)
+    @building_generator = BuildingGenerator.new(self, WindowColor.new)
     @player = Player.new(25, background)
-    @buildings = [ Building.new(-10, 30, 120) ]
+    @buildings = [ @building_generator.build(-10, 30, 120) ]
     @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4, background) ]
     @speed = 4
     @distance = 0
@@ -186,15 +186,19 @@ class World
   end
 end
 
-class BuildingGenerator < Struct.new(:world)
+class BuildingGenerator
+  def initialize world, background
+    @world = world
+    @background = background
+  end
   def destroy_if_necessary
-    while world.buildings.any? && world.buildings.first.x < -100
-      world.buildings.shift
+    while @world.buildings.any? && @world.buildings.first.x < -100
+      @world.buildings.shift
     end
   end
   def generate_if_necessary
-    while (b = world.buildings.last).x < world.horizon
-      world.buildings << Building.new(
+    while (b = @world.buildings.last).x < @world.horizon
+      @world.buildings << build(
         b.right_x + minimium_gap + rand(24),
         next_y(b),
         rand(40) + 40
@@ -208,6 +212,9 @@ class BuildingGenerator < Struct.new(:world)
     p = previous_building
     delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
     [25, [previous_building.y - delta, minimum_height_clearance].max].min
+  end
+  def build x, y, width
+    Building.new x, y, width, @background
   end
 end
 
@@ -226,9 +233,10 @@ end
 
 class Building
   include Renderable
-  def initialize x, y, width
+  def initialize x, y, width, background
     @x, @y = x, y
     @width = width
+    @background = background
     @period = rand(4) + 6
     @window_width = @period - rand(2) - 1
     @color = (235..238).to_a.sample
@@ -255,7 +263,7 @@ class Building
       Pixel.new ":", 236, 236
     else
       if rx % @period >= @period - @window_width && ry % 5 >= 2
-        Pixel.new(" ", 255, 232)
+        Pixel.new(" ", 255, @background.color(rx + x/2, ry))
       else
         Pixel.new(":", 235, @color)
       end
