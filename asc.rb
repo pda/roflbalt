@@ -383,6 +383,3 @@ class RoflCopter < Struct.new(:x, :y)
     " " # Roflcopter crashes from time to time..
   end
 end
-
-
-Game.new.run
