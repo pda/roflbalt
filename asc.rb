@@ -97,7 +97,7 @@ class Pixel
 end
 
 class Background
-  PALETTE = [ 16, 232 ]
+  PALETTE = [ 16, 232, 233 ]
   PERIOD = 5.0
   SPEED = 10.0
   def pixel x, y, char = ":"
@@ -105,7 +105,7 @@ class Background
   end
   def color x, y
     sin = Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)
-    PALETTE[(0.5 * sin + 0.5).round]
+    PALETTE[(0.9 * sin + 0.9).round]
   end
 end
 
