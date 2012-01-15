@@ -192,7 +192,7 @@ class Building < Struct.new(:x, :y, :width)
     @top_color = @color + 4
     @left_color = @color + 2
   end
-  def height; 50 end
+  def height; 20 end
   def char rx, ry, ticks
     if ry == 0
       if rx == width - 1
