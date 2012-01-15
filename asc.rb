@@ -184,17 +184,27 @@ class Building < Struct.new(:x, :y, :width)
     super
     @period = rand(4) + 6
     @window_width = @period - rand(2) - 1
+    @color = (235..238).to_a.sample
+    @top_color = @color + 4
+    @left_color = @color + 2
   end
   def height; 50 end
   def char rx, ry, ticks
     if ry == 0
-      "\033[48;5;238m\033[38;5;234m=\033[0m"
-    elsif rx == 0
-      "\033[48;5;238m\033[38;5;234m|\033[0m"
+      if rx == width - 1
+        " "
+      else
+        "\033[48;5;#{@top_color}m\033[38;5;234m=\033[0m"
+      end
+    elsif rx == 0 || rx == 1
+      "\033[48;5;#{@left_color}m\033[38;5;234m|\033[0m"
+    elsif rx == 2
+      "\033[48;5;236m\033[38;5;234m:\033[0m"
     elsif rx == width - 1
-      "\033[48;5;235m\033[38;5;234m|\033[0m"
+      "\033[48;5;236m\033[38;5;234m|\033[0m"
     else
-      rx % @period >= @period - @window_width && ry % 5 >= 2 ? " " : "\033[48;5;236m\033[38;5;235m:\033[0m"
+      rx % @period >= @period - @window_width && ry % 5 >= 2 ?
+        "\033[48;5;232m \033[0m" : "\033[48;5;#{@color}m\033[38;5;235m:\033[0m"
     end
   end
 end
