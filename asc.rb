@@ -84,9 +84,15 @@ class Screen
   end
 end
 
-class Pixel < Struct.new(:char, :fg, :bg)
+class Pixel
+  def initialize char = " ", fg = nil, bg = nil
+    @char = char
+    @fg, @bg = fg, bg
+  end
+  def fg; @fg || 255 end
+  def bg; @bg || 0 end
   def to_s
-    "\033[48;5;#{bg}m\033[38;5;#{fg}m#{char}\033[0m"
+    "\033[48;5;%dm\033[38;5;%dm%s\033[0m" % [ bg, fg, @char ]
   end
 end
 
