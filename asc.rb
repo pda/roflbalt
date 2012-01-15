@@ -5,17 +5,22 @@ class Game
     reset
   end
   def reset
+    @run = true
     @world = World.new(120)
     @screen = Screen.new(120, 40, @world)
   end
   def run
-    loop do
+    Signal.trap(:INT) do
+      @run = false
+    end
+    while @run
       start_time = Time.new.to_f
       unless @world.tick
         reset
       end
       render start_time
     end
+    on_exit
   end
   def render start_time
     @world.buildings.each do |building|
@@ -26,6 +31,9 @@ class Game
       @screen.draw(object)
     end
     @screen.render start_time
+  end
+  def on_exit
+    @screen.on_exit
   end
 end
 
@@ -64,6 +72,10 @@ class Screen < Struct.new(:width, :height, :world)
 
     print buffer
     create_frame_buffer
+  end
+  def on_exit
+    print "\033[0m" # reset colours
+    print "\x1B[?25h" # re-enable cursor
   end
 end
 
