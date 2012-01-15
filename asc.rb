@@ -234,7 +234,10 @@ class BuildingGenerator
   def minimum_height_clearance; 20; end
   def next_y previous_building
     p = previous_building
-    delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
+    delta = 0
+    while delta.abs <= 1
+      delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
+    end
     [25, [previous_building.y - delta, minimum_height_clearance].max].min
   end
   def build x, y, width
