@@ -361,20 +361,22 @@ class Scoreboard
 end
 
 class GameOverBanner
+  FG = 16
+  BG = 244
   include Renderable
   def x; 28 end
-  def y; 20 end
-  def width; 30 end
+  def y; 14 end
+  def width; 28 end
   def height; 3 end
   def template
     [
-      ' --------------------------- ',
-      ' --       Game Over       -- ',
-      ' --------------------------- ',
+      '                            ',
+      '       YOU DIED. LOL.       ',
+      '                            ',
     ]
   end
   def pixel x, y, rx, ry, ticks
-    template[ry][rx]
+    Pixel.new template[ry][rx], FG, BG
   end
 end
 
