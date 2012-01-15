@@ -124,7 +124,7 @@ class World
     @ticks = 0
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self)
-    @player = Player.new(25)
+    @player = Player.new(25, background)
     @buildings = [ Building.new(-10, 30, 120) ]
     @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4) ]
     @speed = 4
@@ -251,8 +251,9 @@ end
 
 class Player
   include Renderable
-  def initialize y
+  def initialize y, background
     @y = y
+    @background = background
     @velocity = 1
     @walking = false
   end
@@ -260,7 +261,7 @@ class Player
   def width; 3 end
   def height; 3 end
   def pixel x, y, rx, ry, ticks
-    Pixel.new char(rx, ry, ticks), 255, 16
+    Pixel.new char(rx, ry, ticks), 255, @background.color(x, y)
   end
 
   def char rx, ry, ticks
