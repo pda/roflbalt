@@ -63,9 +63,16 @@ class Screen
   def render start_time
     print "\e[H"
     buffer = ''
+    previous_pixel = nil
     (0...height).each do |y|
       (OFFSET...(width + OFFSET)).each do |x|
-        buffer << @fb.get(x, y).to_s
+        pixel = @fb.get(x, y)
+        if Pixel === previous_pixel && Pixel === pixel && pixel.color_equal?(previous_pixel)
+          buffer << pixel.char
+        else
+          buffer << pixel.to_s
+        end
+        previous_pixel = pixel
       end
       buffer << "\n"
     end
@@ -90,10 +97,14 @@ class Pixel
     @char = char
     @fg, @bg = fg, bg
   end
+  attr_reader :char
   def fg; @fg || 255 end
   def bg; @bg || 0 end
   def to_s
     "\033[48;5;%dm\033[38;5;%dm%s" % [ bg, fg, @char ]
+  end
+  def color_equal? other
+    fg == other.fg && bg == other.bg
   end
 end
 
