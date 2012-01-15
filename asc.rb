@@ -243,8 +243,11 @@ class Building < Struct.new(:x, :y, :width)
     elsif rx == width - 1
       Pixel.new "|", 234, 236
     else
-      rx % @period >= @period - @window_width && ry % 5 >= 2 ?
-        Pixel.new(" ", 255, 232) : Pixel.new(":", 235, @color)
+      if rx % @period >= @period - @window_width && ry % 5 >= 2
+        Pixel.new(" ", 255, 232)
+      else
+        Pixel.new(":", 235, @color)
+      end
     end
   end
 end
