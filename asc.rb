@@ -69,6 +69,7 @@ class Screen
       end
       buffer << "\n"
     end
+    print "\033[0m"
 
     dt = Time.new.to_f - start_time;
     target_time = 0.04
