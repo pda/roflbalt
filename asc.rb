@@ -382,23 +382,23 @@ class RoflCopter
     @background = background
     @frames = [
       [
-        '         :LoL:ROFL:ROFL',
-        '  L    ____|__         ',
-        '  O ==`       []\      ',
-        '  L   \__________]     ',
-        '     .__|______|__/    ',
+        '          :LoL:ROFL:ROFL',
+        '  L     ____|__         ',
+        '  O ===`      []\       ',
+        '  L     \________]      ',
+        '       .__|____|__/     ',
       ],
       [
-        'ROFL:ROFL:LoL:         ',
-        '       ____|__         ',
-        ' LOL==`       []\      ',
-        '      \__________]     ',
-        '     .__|______|__/    ',
+        ' ROFL:ROFL:LoL:         ',
+        '        ____|__         ',
+        ' LOL===`      []\       ',
+        '        \________]      ',
+        '       .__|____|__/     ',
       ],
     ]
   end
   attr_reader :x
-  def width; 23 end
+  def width; 24 end
   def height; 5 end
   def y; @y + (5 * Math.sin(Time.new.to_f)).to_i end
   def pixel x, y, rx, ry, ticks
