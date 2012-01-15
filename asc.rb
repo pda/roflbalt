@@ -141,12 +141,12 @@ class World
     @distance += speed
 
     buildings.each do |b|
-      b.x -= speed
+      b.move_left speed
     end
 
     if b = building_under_player
       if player.bottom_y > b.y
-        b.x += speed
+        b.move_left(-speed)
         @speed = 0
         @misc << Blood.new(player.x, player.y)
         @misc << GameOverBanner.new
@@ -218,15 +218,20 @@ module Renderable
   def right_x; x + width end
 end
 
-class Building < Struct.new(:x, :y, :width)
+class Building
   include Renderable
   def initialize x, y, width
-    super
+    @x, @y = x, y
+    @width = width
     @period = rand(4) + 6
     @window_width = @period - rand(2) - 1
     @color = (235..238).to_a.sample
     @top_color = @color + 4
     @left_color = @color + 2
+  end
+  attr_reader :x, :y, :width
+  def move_left distance
+    @x -= distance
   end
   def height; 20 end
   def pixel x, y, rx, ry, ticks
