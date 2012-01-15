@@ -5,8 +5,8 @@ class Game
     reset
   end
   def reset
-    @world = World.new(180)
-    @screen = Screen.new(160, 40, @world)
+    @world = World.new(120)
+    @screen = Screen.new(120, 40, @world)
   end
   def run
     loop do
