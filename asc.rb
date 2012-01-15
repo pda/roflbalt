@@ -346,7 +346,7 @@ class Player
   end
   def acceleration
     if @dead
-      0
+      0.05
     else
       0.35
     end
@@ -371,7 +371,7 @@ class Player
   end
   def die!
     @dead = true
-    @velocity = 0.5
+    @velocity = 0
   end
   def dead?
     @dead
