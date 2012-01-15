@@ -269,7 +269,7 @@ class Building
     @background = background
     @period = rand(4) + 6
     @window_width = @period - rand(2) - 1
-    @color = (235..238).to_a.sample
+    @color = (235..238).to_a.shuffle.first # Ruby 1.8
     @top_color = @color + 4
     @left_color = @color + 2
   end
