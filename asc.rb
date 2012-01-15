@@ -397,10 +397,16 @@ class RoflCopter
       ],
     ]
   end
-  attr_reader :x
   def width; 24 end
   def height; 5 end
-  def y; @y + (5 * Math.sin(Time.new.to_f)).to_i end
+  def y
+    range = 1.5
+    @y + (range * Math.sin(Time.new.to_f * 1.5)).round
+  end
+  def x
+    range = 20
+    @x + (range * Math.sin(Time.new.to_f * 0.7)).round
+  end
   def pixel x, y, rx, ry, ticks
     Pixel.new char(rx, ry, ticks), 255, @background.color(x, y)
   end
