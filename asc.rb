@@ -146,7 +146,7 @@ end
 
 class BuildingGenerator < Struct.new(:world)
   def destroy_if_necessary
-    while world.buildings.any? && world.buildings.first.x < -200
+    while world.buildings.any? && world.buildings.first.x < -100
       world.buildings.shift
     end
   end
