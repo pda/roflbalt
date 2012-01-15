@@ -161,7 +161,7 @@ class BuildingGenerator < Struct.new(:world)
   def next_y previous_building
     p = previous_building
     delta = maximum_height_delta * -1 + rand(2 * maximum_height_delta + 1)
-    [30, [previous_building.y - delta, minimum_height_clearance].max].min
+    [25, [previous_building.y - delta, minimum_height_clearance].max].min
   end
 end
 
