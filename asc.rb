@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+SCREEN_WIDTH = 120
+SCREEN_HEIGHT = 40
+
 class Game
   def initialize
     reset
@@ -7,8 +10,8 @@ class Game
   def reset
     @run = true
     background = Background.new
-    @world = World.new(120, background)
-    @screen = Screen.new(120, 40, @world, background)
+    @world = World.new(SCREEN_WIDTH, background)
+    @screen = Screen.new(SCREEN_WIDTH, SCREEN_HEIGHT, @world, background)
   end
   def run
     Signal.trap(:INT) do
