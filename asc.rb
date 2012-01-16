@@ -9,9 +9,8 @@ class Game
   end
   def reset
     @run = true
-    background = Background.new
-    @world = World.new(SCREEN_WIDTH, background)
-    @screen = Screen.new(SCREEN_WIDTH, SCREEN_HEIGHT, @world, background)
+    @world = World.new(SCREEN_WIDTH)
+    @screen = Screen.new(SCREEN_WIDTH, SCREEN_HEIGHT, @world)
   end
   def run
     Signal.trap(:INT) do
@@ -43,11 +42,11 @@ end
 
 class Screen
   OFFSET = -20
-  def initialize width, height, world, background
+  def initialize width, height, world
     @width = width
     @height = height
     @world = world
-    @background = background
+    @background = world.background
     create_frame_buffer
     %x{stty -icanon -echo}
     print "\033[0m" # reset
@@ -155,17 +154,18 @@ class Framebuffer
 end
 
 class World
-  def initialize horizon, background
+  def initialize horizon
     @ticks = 0
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self, WindowColor.new)
-    @player = Player.new(25, background)
+    @background = Background.new
+    @player = Player.new(25, @background)
     @buildings = [ @building_generator.build(-10, 30, 120) ]
-    @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4, background) ]
+    @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4, @background) ]
     @speed = 4
     @distance = 0
   end
-  attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance
+  attr_reader :buildings, :player, :horizon, :speed, :misc, :ticks, :distance, :background
   def tick
     # TODO: this, but less often.
     if @ticks % 20 == 0
