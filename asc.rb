@@ -113,12 +113,14 @@ end
 
 class Background
   PALETTE = [ 16, 232, 233 ]
-  PERIOD = 5.0
-  SPEED = 10.0
+  PERIOD = 16.0
+  SPEED = 32.0
+  BLOCKINESS = 10.0
   def pixel x, y, char = " "
     Pixel.new char, 0, color(x, y)
   end
   def color x, y
+    y = (y / BLOCKINESS).round * BLOCKINESS
     sin = Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)
     PALETTE[(0.9 * sin + 0.9).round]
   end
