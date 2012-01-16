@@ -113,14 +113,17 @@ end
 class Background
   PALETTE = [ 16, 232, 233 ]
   PERIOD = 16.0
-  SPEED = 32.0
+  SPEED = 0.5
   BLOCKINESS = 10.0
+  def initialize world
+    @world = world
+  end
   def pixel x, y, char = " "
     Pixel.new char, 0, color(x, y)
   end
   def color x, y
     y = (y / BLOCKINESS).round * BLOCKINESS
-    sin = Math.sin((x + Time.new.to_f * SPEED) / PERIOD + y / PERIOD)
+    sin = Math.sin((x + @world.distance.to_f * SPEED) / PERIOD + y / PERIOD)
     PALETTE[(0.9 * sin + 0.9).round]
   end
 end
@@ -158,7 +161,7 @@ class World
     @ticks = 0
     @horizon = horizon
     @building_generator = BuildingGenerator.new(self, WindowColor.new)
-    @background = Background.new
+    @background = Background.new(self)
     @player = Player.new(25, @background)
     @buildings = [ @building_generator.build(-10, 30, 120) ]
     @misc = [ Scoreboard.new(self), RoflCopter.new(50, 4, @background) ]
