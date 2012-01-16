@@ -39,7 +39,11 @@ With Ruby 1.9 installed, run:
 WTF?
 ----
 
-This was made by Dennis Hotson and Paul Annesley at Rails Camp X in Adelaide.
+This was made by [Dennis Hotson][1] and [Paul Annesley][2] at [Rails Camp X][3] in Adelaide.
+
+[1]: http://dhotson.tumblr.com/
+[2]: http://paul.annesley.cc/
+[3]: http://railscamps.com/
 
 
 License
