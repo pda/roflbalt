@@ -17,6 +17,8 @@ With Ruby 1.9 installed, run:
 "Screenshot"
 ------------
 
+(or [check out the video](http://www.youtube.com/watch?v=VoHmJfXqwbM))
+
     Score:     23432
     
                                                         ROFL:ROFL:LoL:ROFL:ROFL
