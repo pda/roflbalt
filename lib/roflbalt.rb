@@ -477,10 +477,4 @@ class RoflCopter
   end
 end
 
-# JRuby doesn't play nice with STDIN.read_nonblock right now
-# see http://jira.codehaus.org/browse/JRUBY-5165
-# So for now, lets have a Control Panel for our jumping man!
-if RUBY_PLATFORM == "java"
-  require File.dirname(__FILE__) + '/jruby_game.rb'
-end
 
