@@ -11,7 +11,7 @@ Instructions
 With Ruby 1.9 installed, run:
 
     cd roflbalt
-    ./rofl
+    ./bin/roflbalt
 
 
 "Screenshot"
