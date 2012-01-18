@@ -35,15 +35,15 @@ is still the thing to use.
 Instructions
 ------------
 
-```shell
-    # install:
-    gem install roflbalt
-    
-    # using rbenv? it rocks.
-    rbenv rehash
-    
-    # LOL
-    roflbalt
+```sh
+# install:
+gem install roflbalt
+
+# using rbenv? it rocks.
+rbenv rehash
+
+# LOL
+roflbalt
 ```
 
 Press any key to jump! If you can't find the any key, try the spacebar.
