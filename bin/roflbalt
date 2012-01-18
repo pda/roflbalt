@@ -2,10 +2,22 @@
 
 require "roflbalt"
 
+  
 # JRuby doesn't play nice with STDIN.read_nonblock right now
 # see http://jira.codehaus.org/browse/JRUBY-5165
 # So for now, lets have a Control Panel for our jumping man!
 if RUBY_PLATFORM == "java"
+  if RUBY_VERSION == '1.8.7'
+    STDERR.puts <<WARNING
+WARNING: Your helo ain't going to look right in JRUBY and 1.8 mode.
+Try setting JRUBY_OPTS before your next rofl copter chase:
+  export JRUBY_OPTS==--1.9 
+
+Press enter to continue, or CTRL+C to quit
+WARNING
+  end
+  STDIN.gets
+
   jruby_game_lib = File.expand_path("../lib", File.dirname(__FILE__)) + '/jruby_game.rb'
   puts "JRuby detected - loading #{ jruby_game_lib }"
   require jruby_game_lib
