@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-# encoding: utf-8
-
-require "./asc.rb"
-
-Game.new.run
