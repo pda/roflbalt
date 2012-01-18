@@ -3,6 +3,7 @@ require 'java'
 import javax.swing.JFrame
 import javax.swing.JLabel
 import java.awt.event.KeyListener
+import java.awt.Dimension
 
 CONTROL_WIDTH = 400
 CONTROL_HEIGHT = 400
@@ -15,11 +16,11 @@ class JRubyGame < Game
   
   def setup_frame
     @frame = JFrame.new("ROFL Control")
-    @frame.set_size CONTROL_WIDTH, CONTROL_HEIGHT
     @frame.default_close_operation = JFrame::EXIT_ON_CLOSE
     jlabel = JLabel.new("'q' to Quit, 'n' for New, 'Any Key' for jump!")
     @frame.add jlabel
     @frame.pack
+    @frame.set_size( Dimension.new( CONTROL_WIDTH, CONTROL_HEIGHT ) )
     # Listen for keystrokes, play notes
     @frame.add_key_listener KeyListener.impl { |name, event|
       case name
