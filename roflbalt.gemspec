@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
 
   gem.require_paths = %w{ lib }
   gem.executables   = %w{ roflbalt }
-  gem.files         = %w{ bin/roflbalt lib/roflbalt.rb README.md }
+  gem.files         = %w{ bin/roflbalt lib/roflbalt.rb lib/jruby_game.rb README.md }
   gem.name          = "roflbalt"
   gem.version       = "0.0.2"
 end
