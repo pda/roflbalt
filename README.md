@@ -12,10 +12,17 @@ and [Dennis Hotson][3] ([@dennishotson][4])
 with < 500 lines of Ruby, no dependencies;
 it just uses `print` and raw xterm-256color escape codes.
 
+We wrote it at [Rails Camp X][5] in two days,
+pair programming over SSH with a shared [tmux][6]/[vim][7] session.
+As such, ~50% of the commits labelled Paul were actually Dennis!
+
 [1]: http://paul.annesley.cc/
 [2]: https://twitter.com/pda
 [3]: http://dhotson.tumblr.com/
 [4]: https://twitter.com/dennishotson
+[5]: http://railscamps.com/#adelaide_jan_2012
+[6]: http://tmux.sourceforge.net/
+[7]: http://www.vim.org/
 
 
 Requirements
@@ -49,6 +56,9 @@ roflbalt
 Press any key to jump! If you can't find the any key, try the spacebar.
 
 And of course, ctrl-c to exit.
+
+If your terminal isn't quite right afterwards, try running `reset` to get it back to normal.
+There's [an issue open](https://github.com/pda/roflbalt/issues/2) for this.
 
 
 "Screenshot"
