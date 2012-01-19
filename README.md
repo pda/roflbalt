@@ -57,6 +57,9 @@ Press any key to jump! If you can't find the any key, try the spacebar.
 
 And of course, ctrl-c to exit.
 
+If your terminal isn't quite right afterwards, try running `reset` to get it back to normal.
+There's [an issue open](https://github.com/pda/roflbalt/issues/2) for this.
+
 
 "Screenshot"
 ------------
