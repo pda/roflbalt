@@ -327,13 +327,13 @@ class Player
         ' @ ',
         '\+/',
         ' \\\\',
-      ][ry][rx]
+      ][ry][rx..rx]
     elsif !@walking
       [
         ' O/',
         '/| ',
         '/ >',
-      ][ry][rx]
+      ][ry][rx..rx]
     else
       [
         [
@@ -346,7 +346,7 @@ class Player
           ',|\\',
           ' >\\',
         ],
-      ][ticks / 4 % 2][ry][rx]
+      ][ticks / 4 % 2][ry][rx..rx]
     end
   end
   def acceleration
@@ -410,7 +410,7 @@ class Scoreboard
     ]
   end
   def pixel x, y, rx, ry, ticks
-    Pixel.new template[ry][rx], 244, 234
+    Pixel.new template[ry][rx..rx], 244, 234
   end
 end
 
@@ -430,7 +430,7 @@ class GameOverBanner
     ]
   end
   def pixel x, y, rx, ry, ticks
-    Pixel.new template[ry][rx], FG, BG
+    Pixel.new template[ry][rx..rx], FG, BG
   end
 end
 
@@ -470,7 +470,7 @@ class RoflCopter
     Pixel.new char(rx, ry, ticks), 246, @background.color(x, y)
   end
   def char rx, ry, ticks
-    @frames[ticks % 2][ry][rx] || " "
+    @frames[ticks % 2][ry][rx..rx] || " "
   rescue
     " " # Roflcopter crashes from time to time..
   end
