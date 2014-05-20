@@ -4,6 +4,7 @@ SCREEN_WIDTH = 120
 SCREEN_HEIGHT = 40
 
 class Game
+  attr_accessor :run, :world
   def initialize
     reset
   end
@@ -475,3 +476,5 @@ class RoflCopter
     " " # Roflcopter crashes from time to time..
   end
 end
+
+
