@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/pda/roflbalt"
 
   gem.require_paths = %w{ lib }
-  gem.executables   = %w{ roflbalt }
-  gem.files         = %w{ bin/rofltim lib/roflbalt.rb README.md }
+  gem.executables   = %w{ rofltim }
+  gem.files         = %w{ bin/rofltim lib/rofltim.rb README.md }
   gem.name          = "rofltim"
   gem.version       = "1.0.1"
 end

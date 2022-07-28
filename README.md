@@ -44,13 +44,13 @@ Instructions
 
 ```sh
 # install:
-gem install roflbalt
+gem install rofltim
 
 # using rbenv? it rocks.
 rbenv rehash
 
 # LOL
-roflbalt
+rofltim
 ```
 
 Press any key to jump! If you can't find the any key, try the spacebar.
