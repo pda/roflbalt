@@ -11,5 +11,5 @@ Gem::Specification.new do |gem|
   gem.executables   = %w{ rofltim }
   gem.files         = %w{ bin/rofltim lib/rofltim.rb README.md }
   gem.name          = "rofltim"
-  gem.version       = "1.0.1"
+  gem.version       = "1.0.2"
 end

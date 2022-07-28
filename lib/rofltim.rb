@@ -389,7 +389,7 @@ class Blood < Struct.new(:x, :y)
   def width; 2 end
   def x; super + 2 end
   def pixel x, y, rx, ry, ticks
-    Pixel.new ":", 124, 52
+    Pixel.new ":", 112, 34
   end
 end
 
@@ -421,11 +421,13 @@ class GameOverBanner
   def x; 28 end
   def y; 14 end
   def width; 28 end
-  def height; 3 end
+  def height; 5 end
   def template
     [
       '                            ',
-      '       YOU DIED. LOL.       ',
+      '  ♥                      ♥  ',
+      '  ♥      YOU LEFT :(     ♥  ',
+      '  ♥                      ♥  ',
       '                            ',
     ]
   end
