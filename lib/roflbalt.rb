@@ -441,16 +441,16 @@ class RoflCopter
     @background = background
     @frames = [
       [
-        '          :LoL:ROFL:ROFL',
-        '  L     ____|__         ',
-        '  O ===`      []\       ',
-        '  L     \________]      ',
+        '          :TiM:TIM:TIM  ',
+        '  T     ____|__         ',
+        '  I ===`      []\       ',
+        '  M     \________]      ',
         '       .__|____|__/     ',
       ],
       [
-        ' ROFL:ROFL:LoL:         ',
+        '   TIM:TIM:tIm:         ',
         '        ____|__         ',
-        ' LOL===`      []\       ',
+        ' TIM===`      []\       ',
         '        \________]      ',
         '       .__|____|__/     ',
       ],
